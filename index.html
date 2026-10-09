@@ -1,0 +1,32 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>TikTok Watermark Remover</title>
+</head>
+<body>
+  <h2>Paste TikTok Link</h2>
+
+  <input id="url" placeholder="paste video link here" size="40">
+  <button onclick="download()">Download Without Watermark</button>
+
+  <script>
+  async function download() {
+      const url = document.getElementById("url").value;
+
+      const res = await fetch("/download", {
+          method: "POST",
+          headers: {"Content-Type": "application/json"},
+          body: JSON.stringify({video_url: url})
+      });
+
+      if (!res.ok) { alert("Error downloading!"); return; }
+
+      const blob = await res.blob();
+      const a = document.createElement("a");
+      a.href = window.URL.createObjectURL(blob);
+      a.download = "video.mp4";
+      a.click();
+  }
+  </script>
+</body>
+</html>
